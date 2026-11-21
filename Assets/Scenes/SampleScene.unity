@@ -1517,7 +1517,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\xA1Goool!"
+  m_Text: 
 --- !u!222 &1581331148
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1598,7 +1598,7 @@ Transform:
   m_GameObject: {fileID: 1800000010}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.1, z: -4.5}
+  m_LocalPosition: {x: 0, y: 1.1, z: -6.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1691,7 +1691,7 @@ Transform:
   m_GameObject: {fileID: 1800000016}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 1.1, z: 4.5}
+  m_LocalPosition: {x: 0, y: 1.1, z: 9.41}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1804,19 +1804,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Match
   playerPrefab: {fileID: 8006908245728873934, guid: 965aa45bf8013881cb2b25a223cdc84c, type: 3}
-  homeSpawns:
+  playerSpawns:
   - {fileID: 1800000011}
   - {fileID: 1800000013}
   - {fileID: 1800000015}
-  awaySpawns:
+  cpuSpawns:
   - {fileID: 1800000017}
   - {fileID: 1800000019}
   - {fileID: 1800000021}
-  homeColor: {r: 0.2, g: 0.4, b: 1, a: 1}
-  awayColor: {r: 1, g: 0.25, b: 0.2, a: 1}
+  playerColor: {r: 0.2, g: 0.4, b: 1, a: 1}
+  cpuColor: {r: 1, g: 0.25, b: 0.2, a: 1}
   ball: {fileID: 791774285}
-  homeGoal: {fileID: 1700000001}
-  awayGoal: {fileID: 1700000002}
+  playerGoal: {fileID: 1700000001}
+  cpuGoal: {fileID: 1700000002}
   scoreText: {fileID: 909615067}
   goalText: {fileID: 1581331147}
   followCamera: {fileID: 1800000201}

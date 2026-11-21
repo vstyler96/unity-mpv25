@@ -6,7 +6,10 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public enum Team { Home, Away }
+public enum Team {
+    Player,
+    Cpu
+}
 
 public class Match : MonoBehaviour
 {
@@ -19,25 +22,25 @@ public class Match : MonoBehaviour
     private Player playerPrefab;
 
     [SerializeField]
-    private Transform[] homeSpawns;
+    private Transform[] playerSpawns;
 
     [SerializeField]
-    private Transform[] awaySpawns;
+    private Transform[] cpuSpawns;
 
     [SerializeField]
-    private Color homeColor = new Color(0.2f, 0.4f, 1f);
+    private Color playerColor = new Color(0.2f, 0.4f, 1f);
 
     [SerializeField]
-    private Color awayColor = new Color(1f, 0.25f, 0.2f);
+    private Color cpuColor = new Color(1f, 0.25f, 0.2f);
 
     [SerializeField]
     private Ball ball;
 
     [SerializeField]
-    private Transform homeGoal;
+    private Transform playerGoal;
 
     [SerializeField]
-    private Transform awayGoal;
+    private Transform cpuGoal;
 
     [SerializeField]
     private Text scoreText;
@@ -53,23 +56,25 @@ public class Match : MonoBehaviour
 
     private readonly List<Player> players = new List<Player>();
     private readonly List<Transform> spawns = new List<Transform>();
-    private int homeScore;
-    private int awayScore;
+    private int playerScore;
+    private int cpuScore;
     private float timeLeft;
 
     public Ball Ball => ball;
     public bool IsPlaying { get; private set; }
     public IReadOnlyList<Player> Players => players;
 
-    public Vector3 EnemyGoal(Team t) => Flat(t == Team.Home ? awayGoal : homeGoal);
+    public Vector3 EnemyGoal(Team t) => Flat(t == Team.Player ? cpuGoal : playerGoal);
 
     private static Vector3 Flat(Transform t) => new Vector3(t.position.x, 0f, t.position.z);
 
     private void Awake()
     {
         Instance = this;
-        Spawn(homeSpawns, Team.Home, homeColor);
-        Spawn(awaySpawns, Team.Away, awayColor);
+
+        Spawn(playerSpawns, Team.Player, playerColor);
+        Spawn(cpuSpawns, Team.Cpu, cpuColor);
+
         followCamera.Follow = players[0].transform;
         followCamera.LookAt = players[0].transform;
         timeLeft = matchSeconds;
@@ -80,7 +85,7 @@ public class Match : MonoBehaviour
     {
         for (int i = 0; i < points.Length; i++) {
             Player f = Instantiate(playerPrefab, points[i].position, points[i].rotation);
-            f.Init(team, (Role)Mathf.Min(i, (int)Role.Guard), team == Team.Home && i == 0, color);
+            f.Init(team, (Role)Mathf.Min(i, (int)Role.Guard), team == Team.Player && i == 0, color);
             players.Add(f);
             spawns.Add(points[i]);
         }
@@ -102,7 +107,7 @@ public class Match : MonoBehaviour
         }
 
         if (timeLeft <= 0f) {
-            scoreText.text = $"FULL TIME  Home {homeScore} - {awayScore} Away  (press any key)";
+            scoreText.text = $"FULL TIME  Player {playerScore} - {cpuScore} CPU  (press any key)";
             bool key = Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame;
             bool pad = Gamepad.current != null
                 && (Gamepad.current.buttonSouth.wasPressedThisFrame || Gamepad.current.startButton.wasPressedThisFrame);
@@ -113,26 +118,22 @@ public class Match : MonoBehaviour
         }
 
         int secs = Mathf.CeilToInt(timeLeft);
-        scoreText.text = $"Home {homeScore} - {awayScore} Away   {secs / 60}:{secs % 60:00}";
+        scoreText.text = $"Player {playerScore} - {cpuScore} CPU   {secs / 60}:{secs % 60:00}";
     }
 
     public void Scored(Team scoringTeam)
     {
-        if (!IsPlaying) {
-            return;
-        }
-        if (scoringTeam == Team.Home) {
-            homeScore++;
-        } else {
-            awayScore++;
-        }
+        if (!IsPlaying) return;
+        if (scoringTeam == Team.Player) playerScore++;
+        if (scoringTeam == Team.Cpu) cpuScore++;
+
         IsPlaying = false;
         StartCoroutine(Kickoff(scoringTeam));
     }
 
     private IEnumerator Kickoff(Team scoringTeam)
     {
-        goalText.color = scoringTeam == Team.Home ? homeColor : awayColor;
+        goalText.color = scoringTeam == Team.Player ? playerColor : cpuColor;
         goalText.text = "¡Goool!";
         yield return new WaitForSeconds(1.5f);
         goalText.text = "";

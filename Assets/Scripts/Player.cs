@@ -33,6 +33,14 @@ public partial class Player : MonoBehaviour
     {
         controller = new InputSystem_Actions();
         rigidBody = GetComponent<Rigidbody>();
+
+        // Dark visor on the front so you can see which way the player faces.
+        GameObject face = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        Destroy(face.GetComponent<Collider>());
+        face.transform.SetParent(transform, false);
+        face.transform.localPosition = new Vector3(0f, 0.5f, 0.45f);
+        face.transform.localScale = new Vector3(0.6f, 0.2f, 0.2f);
+        face.GetComponent<Renderer>().material.color = Color.black;
     }
 
     private void OnDisable()
