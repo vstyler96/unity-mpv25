@@ -1,6 +1,6 @@
 # Unity Fundamentals [Mini Fútbol 3D (3v3)]
 
-Mini fútbol 3D 3 contra 3 hecho en Unity. Controlas a un jugador del equipo local (azul) con dos compañeros manejados por la IA, contra tres rivales de la IA (rojo). El partido dura 3 minutos; al final pulsa cualquier tecla para jugar otra vez.
+Mini fútbol 3D 3 contra 3 hecho en Unity. Controlas a un jugador del equipo `Player` (azul) con dos compañeros manejados por la IA, contra los tres rivales del equipo `Cpu` (rojo). El partido dura 3 minutos; al final pulsa cualquier tecla para jugar otra vez.
 
 ## Requisitos
 
@@ -27,14 +27,10 @@ Mini fútbol 3D 3 contra 3 hecho en Unity. Controlas a un jugador del equipo loc
 ## Partido
 
 - **Campo**: 60 m de largo (eje Z) por 30 m de ancho (eje X). Las porterías miden 9 m y están centradas en x = 0.
-- **Equipos**: el local defiende la portería de z = -30 y ataca hacia +Z; el visitante, al revés.
-- **Alineaciones**: el objeto `Match` de la escena tiene las listas `homeSpawns` y `awaySpawns` (hijos de `Spawns`). El primer punto de `homeSpawns` es el jugador humano. Mueve o añade puntos para cambiar la formación.
-- **IA**: cada equipo tiene tres roles fijos durante todo el partido, según el orden de `homeSpawns` / `awaySpawns`: goleador (el primero; en el local eres tú), portero y defensa. La IA es muy básica: el goleador va directo a la pelota y chuta a portería; el portero y el defensa se quedan quietos en su punto de salida y chutan si la pelota les llega.
+- **Equipos**: `Player` defiende la portería de z = -30 y ataca hacia +Z; `Cpu`, al revés.
+- **Alineaciones**: el objeto `Match` de la escena tiene las listas `playerSpawns` y `cpuSpawns` (hijos de `Spawns`). El primer punto de `playerSpawns` es el jugador humano. Mueve o añade puntos para cambiar la formación.
+- **IA**: cada equipo tiene tres roles fijos durante todo el partido, según el orden de `playerSpawns` / `cpuSpawns`: goleador (el primero; en `Player` eres tú), portero y defensa. La IA es muy básica: el goleador va directo a la pelota y chuta a portería; el portero y el defensa se quedan quietos en su punto de salida y chutan si la pelota les llega.
 - **Gol**: aparece **¡Goool!** en el centro de la pantalla, del color del equipo que ha marcado. El juego se congela 1,5 s y todos vuelven a su posición inicial con la pelota en el centro.
-
-## Guía paso a paso
-
-Abre [`Docs/football-3v3-guide.html`](Docs/football-3v3-guide.html) en el navegador: explica cómo reconstruir el juego desde cero (campo, prefabs, los cinco scripts, los controles con el Input System y cómo cambiar teclas).
 
 ## Estructura
 
@@ -51,7 +47,7 @@ Assets/
 ### Scripts
 
 - **`Match.cs`**: crea los 6 jugadores, asigna la cámara al humano, lleva el marcador y el tiempo, muestra **¡Goool!** y hace el saque tras cada gol.
-- **`Player.cs`**: un jugador (humano o IA): movimiento con Rigidbody, chute y reinicio de posición.
+- **`Player.cs`**: un jugador (humano o IA): movimiento con Rigidbody, chute, reinicio de posición y un visor oscuro que indica hacia dónde mira.
 - **`PlayerAI.cs`**: la IA básica: el goleador persigue la pelota; el portero y el defensa se quedan en su sitio.
 - **`Ball.cs`**: la pelota; `ResetPhysics(posición)` la detiene y la coloca en el punto indicado.
 - **`Goal.cs`**: al entrar un objeto con la etiqueta `Ball` en el trigger, avisa a `Match` de qué equipo ha marcado.
